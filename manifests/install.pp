@@ -110,10 +110,12 @@ class docker::install {
 
   if $docker::manage_package {
     if $docker::repo_opt {
-      package { 'docker':
-        ensure          => $docker::ensure,
-        name            => $dockerpackage,
-        install_options => $docker::repo_opt,
+      Package { install_options => $docker::repo_opt }
+    }
+    if $docker::package_source {
+      package { 'docker-engine' :
+        ensure => $docker::ensure,
+        source => $docker::package_source
       }
     } else {
         package { 'docker':

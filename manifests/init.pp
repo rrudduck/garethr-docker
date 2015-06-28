@@ -180,6 +180,7 @@ class docker(
   $dm_metadatadev              = $docker::params::dm_metadatadev,
   $execdriver                  = $docker::params::execdriver,
   $manage_package              = $docker::params::manage_package,
+  $package_source              = $docker::params::package_source,
   $manage_epel                 = $docker::params::manage_epel,
   $package_name                = $docker::params::package_name,
   $service_name                = $docker::params::service_name,
@@ -217,6 +218,18 @@ class docker(
 
   if ($dm_datadev and !$dm_metadatadev) or (!$dm_datadev and $dm_metadatadev) {
     fail('You need to provide both $dm_datadev and $dm_metadatadev parameters for direct lvm.')
+  }
+
+  if $package_source {
+    case $::osfamily {
+      'Debian' : {
+        Package { provider => 'dpkg' }
+      }
+      'RedHat' : {
+        Package { provider => 'rpm' }
+      }
+      default : {}
+    }
   }
 
   class { 'docker::install': } ->

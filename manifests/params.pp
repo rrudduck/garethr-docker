@@ -30,6 +30,7 @@ class docker::params {
   $dm_datadev                   = undef
   $dm_metadatadev               = undef
   $manage_package               = true
+  $package_source               = undef
   $manage_kernel                = true
   $manage_epel                  = true
   $package_name_default         = 'lxc-docker'
